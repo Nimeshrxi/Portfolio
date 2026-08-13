@@ -1,5 +1,6 @@
 """API views for portfolio content."""
 from rest_framework import permissions, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
 
@@ -58,7 +59,7 @@ class ProjectViewSet(PublicAdminModelViewSet):
             queryset = queryset.filter(category=category)
         if featured in ("1", "true", "True", "yes"):
             queryset = queryset.filter(is_featured=True)
-        return queryset
+        return queryset.order_by('-created_at')
 
 
 class SkillCategoryViewSet(PublicAdminModelViewSet):
@@ -136,3 +137,9 @@ class ContactMessageViewSet(viewsets.ModelViewSet):
             status=status.HTTP_201_CREATED,
             headers=headers,
         )
+
+    @action(detail=False, methods=["get"], permission_classes=[permissions.IsAdminUser])
+    def unread(self, request):
+        """Get unread contact messages."""
+        unread_count = ContactMessage.objects.filter(is_read=False).count()
+        return Response({"unread_count": unread_count})
