@@ -35,6 +35,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = "__all__"
+        read_only_fields = ("id", "created_at", "updated_at", "slug")
 
 
 class SkillSerializer(serializers.ModelSerializer):
@@ -57,36 +58,42 @@ class SkillCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SkillCategory
         fields = ("id", "name", "slug", "order", "skills")
+        read_only_fields = ("id", "slug")
 
 
 class ExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experience
         fields = "__all__"
+        read_only_fields = ("id", "created_at", "updated_at")
 
 
 class EducationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Education
         fields = "__all__"
+        read_only_fields = ("id", "created_at", "updated_at")
 
 
 class AchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
         fields = "__all__"
+        read_only_fields = ("id", "created_at", "updated_at")
 
 
 class SocialLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialLink
         fields = "__all__"
+        read_only_fields = ("id",)
 
 
 class ResumeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resume
         fields = "__all__"
+        read_only_fields = ("id", "created_at", "updated_at")
 
 
 class ContactMessageSerializer(serializers.ModelSerializer):
@@ -100,3 +107,4 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = SiteSettings
         fields = "__all__"
+        read_only_fields = ("id",)

@@ -61,11 +61,14 @@ class Project(TimeStampedModel):
         ARCHIVED = "ARCHIVED", "Archived"
 
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=220, unique=True, blank=True)
+    slug = models.SlugField(
+        max_length=220, unique=True, blank=True, db_index=True
+    )
     category = models.CharField(
         max_length=20,
         choices=Category.choices,
         default=Category.OTHER,
+        db_index=True,
     )
     short_description = models.CharField(max_length=300, blank=True)
     description = models.TextField(blank=True)
@@ -90,12 +93,13 @@ class Project(TimeStampedModel):
     featured_image = models.ImageField(
         upload_to="projects/", blank=True, null=True
     )
-    is_featured = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False, db_index=True)
     order = models.PositiveIntegerField(default=0)
     status = models.CharField(
         max_length=30,
         choices=Status.choices,
         default=Status.ACTIVE,
+        db_index=True,
     )
     completion_date = models.DateField(blank=True, null=True)
 
@@ -103,6 +107,10 @@ class Project(TimeStampedModel):
         ordering = ["order", "-created_at"]
         verbose_name = "Project"
         verbose_name_plural = "Projects"
+        indexes = [
+            models.Index(fields=["category", "-created_at"]),
+            models.Index(fields=["is_featured", "order"]),
+        ]
 
     def __str__(self):
         return self.title
@@ -336,3 +344,12 @@ class SiteSettings(TimeStampedModel):
 
     def __str__(self):
         return self.site_name
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        obj, created = cls.objects.get_or_create(pk=1)
+        return obj
