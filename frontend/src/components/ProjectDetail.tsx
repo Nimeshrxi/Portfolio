@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Database, ExternalLink, Github, Layers, Lightbulb, ShieldCheck } from "lucide-react";
+import React from "react";
 
 import { DJANGO_ADMIN_URL, mediaUrl } from "@/lib/constants";
 import { asList, statusLabel } from "@/lib/format";
@@ -105,19 +106,21 @@ WHERE slug = '${project.slug}';`}
         </section>
 
         <div className="mt-10 grid gap-4 md:grid-cols-4">
-          {[
-            ["Overview", project.short_description, ShieldCheck],
-            ["Architecture", project.architecture, Layers],
-            ["Database", project.database, Database],
-            ["Learning", project.learning, Lightbulb],
-          ].map(([title, body, Icon]) => (
-            <div key={title as string} className="glass-panel rounded p-4">
-              <Icon className="mb-4 h-5 w-5 text-spider-red-bright" />
-              <p className="text-xs uppercase tracking-[0.22em] text-fog">{title as string}</p>
-              <p className="mt-2 text-sm leading-6 text-mist">{body as string}</p>
+          {(
+            [
+              ["Overview", project.short_description, ShieldCheck],
+              ["Architecture", project.architecture, Layers],
+              ["Database", project.database, Database],
+              ["Learning", project.learning, Lightbulb],
+            ] as [string, string, React.ElementType][]
+          ).map(([title, body, Icon]) => (
+          <div key={title} className="glass-panel rounded p-4">
+            <Icon className="mb-4 h-5 w-5 text-spider-red-bright" />
+            <p className="text-xs uppercase tracking-[0.22em] text-fog">{title}</p>
+            <p className="mt-2 text-sm leading-6 text-mist">{body}</p>
             </div>
           ))}
-        </div>
+          </div>
 
         <div className="mt-8 grid gap-5 lg:grid-cols-2">
           <DetailBlock title="Problem" body={project.problem} />
