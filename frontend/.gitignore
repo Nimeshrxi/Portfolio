@@ -36,11 +36,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# character assets (binary PNGs — keep README)
-/public/character/*.png
-/public/character/*.jpg
-/public/character/*.webp
-
 # Node
 frontend/node_modules/
 frontend/.next/

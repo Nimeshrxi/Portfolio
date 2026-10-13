@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-import { CharacterScene, type CharacterSection } from "@/components/CharacterScene";
 import { ContactForm } from "@/components/ContactForm";
 import { Navbar } from "@/components/Navbar";
 import { ProjectCard } from "@/components/ProjectCard";
@@ -30,25 +29,6 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { DEFAULT_INTRO, DEFAULT_TITLE, DJANGO_ADMIN_URL, PROJECT_CATEGORIES, mediaUrl } from "@/lib/constants";
 import { asList, yearLabel } from "@/lib/format";
 import type { PortfolioData, ProjectCategory } from "@/lib/types";
-
-const characterSections = new Set<CharacterSection>([
-  "home",
-  "about",
-  "skills",
-  "coding",
-  "projects",
-  "experience",
-  "education",
-  "achievements",
-  "resume",
-  "contact",
-]);
-
-function toCharacterSection(value: string): CharacterSection {
-  return characterSections.has(value as CharacterSection)
-    ? (value as CharacterSection)
-    : "home";
-}
 
 function SectionBackdrop({
   density = "normal",
@@ -150,7 +130,7 @@ export function CinematicPortfolio({
   data: PortfolioData;
   apiOffline: boolean;
 }) {
-  const [activeSection, setActiveSection] = useState<CharacterSection>("home");
+  const [activeSection, setActiveSection] = useState("home");
   const [spiderSense, setSpiderSense] = useState(Boolean(data.settings?.enable_spider_sense));
   const [category, setCategory] = useState<ProjectCategory>("ALL");
   const [webShot, setWebShot] = useState(0);
@@ -176,7 +156,7 @@ export function CinematicPortfolio({
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         const id = visible?.target.getAttribute("data-section-id");
-        if (id) setActiveSection(toCharacterSection(id));
+        if (id) setActiveSection(id);
       },
       { threshold: [0.26, 0.42, 0.62] },
     );
@@ -225,8 +205,6 @@ export function CinematicPortfolio({
         spiderSense={spiderSense}
         onToggleSpiderSense={() => setSpiderSense((value) => !value)}
       />
-      <CharacterScene activeSection={activeSection} spiderSense={spiderSense} />
-
       {isDesktop ? (
         <div
           aria-hidden="true"

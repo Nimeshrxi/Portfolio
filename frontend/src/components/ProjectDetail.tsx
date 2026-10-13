@@ -1,9 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Database, ExternalLink, Github, Layers, Lightbulb, ShieldCheck } from "lucide-react";
 import React from "react";
 
-import { DJANGO_ADMIN_URL, mediaUrl } from "@/lib/constants";
+import { DJANGO_ADMIN_URL } from "@/lib/constants";
 import { asList, statusLabel } from "@/lib/format";
 import type { Project } from "@/lib/types";
 
@@ -24,7 +23,6 @@ function DetailBlock({
 }
 
 export function ProjectDetail({ project }: { project: Project }) {
-  const image = mediaUrl(project.featured_image);
   const features = asList(project.features);
   const tech = asList(project.tech_stack);
 
@@ -47,7 +45,7 @@ export function ProjectDetail({ project }: { project: Project }) {
           Back to projects
         </Link>
 
-        <section className="mt-8 grid gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+        <section className="mt-8">
           <div>
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.32em] text-electric-blue-bright">
               Project mission file
@@ -74,34 +72,6 @@ export function ProjectDetail({ project }: { project: Project }) {
                 Edit in admin
               </a>
             </div>
-          </div>
-
-          <div className="mission-card relative aspect-[16/10] overflow-hidden">
-            {image ? (
-              <Image
-                src={image}
-                alt={`${project.title} screenshot`}
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 44vw"
-                className="object-cover"
-              />
-            ) : (
-              <div className="absolute inset-0 p-5 font-mono text-sm text-electric-blue-bright">
-                <div className="mb-5 flex items-center gap-2 text-mist">
-                  <span className="h-3 w-3 rounded-full bg-spider-red" />
-                  <span className="h-3 w-3 rounded-full bg-electric-blue" />
-                  <span className="h-3 w-3 rounded-full bg-white/70" />
-                  <span className="ml-2">architecture.sql</span>
-                </div>
-                <pre className="whitespace-pre-wrap leading-7">
-{`SELECT title, status, category
-FROM projects
-WHERE slug = '${project.slug}';`}
-                </pre>
-              </div>
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
           </div>
         </section>
 
